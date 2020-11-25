@@ -3,6 +3,22 @@
 ### Author: William Hamilton (wleif@stanford.edu)
 ### [Project Website](http://nlp.stanford.edu/projects/histwords)
 
+
+### Modification by Santiago Arconada (sarconada@gatech.edu)
+### Forked to use in Meaning Change Historical Analysis
+
+## Changes from original version
+1. Modifications to use with python3.9
+2. Example.py has been modified to retrieve neighbor set information
+
+### How to use
+1. Download pre-trained word2vec vectors from links below
+2. Include downloaded folder in project directory (i.e. Users/yourusername/Downloads/histwords)
+3. To alter the time period looking at adjust the range in the for-loop (i.e. range(1900, 2000, 20 to extract word embeddings from 20 year periods between 1900s and 2000s)
+4. To change the pre-trained vector modify the variable in SequentialEmbedding.load("thepretrainedvectoryouchose")
+5. To change the number of closest embeddings change the n variable in get_seq_neighbour_set("word",n=somenumber)
+
+
 ## Overview 
 
 An eclectic collection of tools for analyzing historical language change using vector space semantics.

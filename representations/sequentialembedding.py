@@ -25,13 +25,14 @@ class SequentialEmbedding:
 
     def get_time_sims(self, word1, word2):
        time_sims = collections.OrderedDict()
-       for year, embed in self.embeds.iteritems():
+    #    for year, embed in self.embeds.iteritems():
+       for year, embed in iter(self.embeds.items()):
            time_sims[year] = embed.similarity(word1, word2)
        return time_sims
 
     def get_seq_neighbour_set(self, word, n=3):
         neighbour_set = set([])
-        for embed in self.embeds.itervalues():
+        for embed in iter(self.embeds.values()):
             closest = embed.closest(word, n=n)
             for _, neighbour in closest:
                 neighbour_set.add(neighbour)
