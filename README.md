@@ -12,6 +12,14 @@
 2. Example.py has been modified to retrieve neighbor set information
 
 ### How to use
+#### Web Based
+1. Download pre-trained word2vec vectors from links below
+2. Include downloaded folder in project directory (i.e. Users/yourusername/Downloads/histwords/embeddings)
+3. Run python3 viz/web/main.py
+4. Go to localhost:5000 on your browser
+5. Play around!
+
+#### Terminal Based
 1. Download pre-trained word2vec vectors from links below
 2. Include downloaded folder in project directory (i.e. Users/yourusername/Downloads/histwords)
 3. To alter the time period looking at adjust the range in the for-loop (i.e. range(1900, 2000, 20 to extract word embeddings from 20 year periods between 1900s and 2000s)
