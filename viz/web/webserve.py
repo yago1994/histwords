@@ -4,13 +4,14 @@ import base64
 import threading
 
 import ssl
-import SocketServer
-import BaseHTTPServer
-from SimpleHTTPServer import SimpleHTTPRequestHandler
+import socketserver
+import http.server
+from http.server import SimpleHTTPRequestHandler
+from importlib import reload
 
 WEB_PORT=5000
 
-class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     def log_request(self, *args, **kwargs):
         pass
 
@@ -31,7 +32,7 @@ class WebHandler(SimpleHTTPRequestHandler):
 SERVER=None
 def serve_http(https_port=80, HandlerClass = WebHandler):
     global SERVER
-    SocketServer.TCPServer.allow_reuse_address = True
+    socketserver.TCPServer.allow_reuse_address = True
     httpd = ThreadedTCPServer(("", https_port), HandlerClass)
     debug("Serving HTTP on", https_port)
 
@@ -75,8 +76,8 @@ def main():
     while True:
         t.join(0.5)
 
-        if not t.isAlive():
-            print "WEBSERVER DIED, EXITING"
+        if not t.is_alive():
+            print ("WEBSERVER DIED, EXITING")
             break
 
 if __name__ == '__main__':

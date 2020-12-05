@@ -565,11 +565,15 @@
 
   function visualizeResults(data, res) {
     DATA = data;
+    console.log(data);
+    // data2 = JSON.parse(data);
     RES = res;
 
     // highlight the term from data
     $('.breadcrumb').removeClass('active');
+    console.log("maybe I fail here?");
     $('#breadcrumb_' + getCrumb(data.term)).addClass('active');
+    console.log("If i'm there it means no");
 
     drawVisuals();
   }
@@ -620,6 +624,7 @@
 
   function submitTextarea() {
     var textEl = $('.header .inputbox');
+    console.log(textEl.val()," is the word we are searching");
     var word = textEl.val();
 
     addBreadcrumb(word);

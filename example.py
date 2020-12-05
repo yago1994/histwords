@@ -14,10 +14,9 @@ if __name__ == "__main__":
     # for year, sim in iter(time_sims.items()):
     #     print ("{year:d}, cosine similarity={sim:0.2f}".format(year=year,sim=sim))
 
-    for year in range(1950, 2000, 10):
-    # for year in iter(time_sims):
-        # print ("{year:d}, neighbour={sim}".format(year=year,sim=sim))
-        fiction_embeddings = SequentialEmbedding.load("eng-all_sgns", range(year, year+10, 10))
-        time_sims = fiction_embeddings.get_seq_neighbour_set("gay",n=5) 
+    for year in range(1800, 2000, 20):
+        fiction_embeddings = SequentialEmbedding.load("eng-all_sgns", range(year, year+20, 20))
+        # fiction_embeddings = SequentialEmbedding.load("fre-all", range(year, year+20, 20))
+        time_sims = fiction_embeddings.get_seq_neighbour_set("awful",n=5) 
         print(year)
         print(time_sims)

@@ -2,12 +2,13 @@
 import json
 import time
 import os
+import numpy as np
 
 import datetime
 import helpers
 import mimetypes
 
-from urlparse import urlparse, parse_qs
+from urllib.parse import urlparse, parse_qs
 import zlib
 
 from collections import defaultdict
@@ -21,7 +22,7 @@ def write_response(handler, code, headers, data=""):
 
     if data:
         zlib_encode = zlib.compressobj(9, zlib.DEFLATED, zlib.MAX_WBITS | 16)
-        content = zlib_encode.compress(data) + zlib_encode.flush()
+        content = zlib_encode.compress(data.encode('utf-8')) + zlib_encode.flush()
 
         if len(content) < len(data):
             handler.send_header('Content-Encoding', 'gzip')
@@ -74,7 +75,7 @@ def do_search(word1):
             if not word2 in term_cache:
                 term_cache[word2] = helpers.get_time_sims(embeddings, word2)
             else:
-                print "USING CACHED NEIGHBORS FOR", word2
+                print ("USING CACHED NEIGHBORS FOR", word2)
 
             time_sims, lookups, nearests, sims = term_cache[word2]
 
@@ -93,19 +94,19 @@ def do_search(word1):
 
         # we should stitch the arrays together into objects, i guess
         objs = []
-        for i in xrange(len(words)):
-            word = words[i]
+        for i in range(len(words)):
+            word = list(words)[i]
             ww, decade = word.split("|")
             obj = {
                 "word" : ww,
                 "query" : all_terms[word],
                 "year" : int(decade),
-                "similarity" : all_sims[word],
+                "similarity" : all_sims[word][0],
                 "avg_similarity" : sum(all_sims[word]) / len(all_sims[word]),
                 "sum_similarity" : sum(all_sims[word]),
                 "position" : {
-                    "x" : round(fitted[i][0], 3),
-                    "y" : round(fitted[i][1], 3)
+                    "x" : 1.*(round(fitted[i][0], 3)),
+                    "y" : 1.*(round(fitted[i][1], 3))
                 }
             }
 
@@ -123,7 +124,7 @@ def do_get(handler):
     query = parse_qs(parts.query)
 
     if parts.path in STATIC:
-        with open(STATIC[parts.path], "r") as f:
+        with open(STATIC[parts.path], "r", encoding="utf-8") as f:
             mt, enc = mimetypes.guess_type(parts.path)
             if not mt:
                 mt,enc = mimetypes.guess_type(STATIC[parts.path])
@@ -135,12 +136,12 @@ def do_get(handler):
         prev_ts = float(get_value(query, "since", 0))
 
         msg_dict = {
-            "since": helpers.get_now()
+            "since": 1.*helpers.get_now()
         }
 
         if cmd == "search":
             term = get_value(query, "term")
-            print "DOING SEARCH", term
+            print ("DOING SEARCH", term)
             if term:
                 ret = do_search(term)
             msg_dict.update(ret)
